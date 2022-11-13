@@ -40,9 +40,12 @@ export const sortPeople = (
   }
 
   return people.slice(0).sort((a, b) => {
-    if (order === "asc") {
-      return a[field] < b[field] ? -1 : a[field] > b[field] ? 1 : 0;
+    if (a[field] < b[field]) {
+      return order === 'asc' ? -1 : 1;
     }
-    return a[field] < b[field] ? 1 : a[field] > b[field] ? -1 : 0;
+    if (a[field] > b[field]) {
+      return order === 'asc' ? 1 : -1;
+    }
+    return 0;
   });
 };
