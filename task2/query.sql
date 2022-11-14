@@ -11,6 +11,6 @@ WITH active_plans AS (
 	JOIN "Plans" AS p ON p.id = ap."planId"
 )
 
-SELECT "subscriptionPeriodId", "subscriptionId", SUM(price) as total, STRING_AGG("planId"::TEXT, ',')
+SELECT "subscriptionPeriodId", "subscriptionId", SUM(price) as total, STRING_AGG("planId"::TEXT, ',') as plans
 FROM periods_with_price 
 GROUP BY "subscriptionPeriodId", "subscriptionId";
