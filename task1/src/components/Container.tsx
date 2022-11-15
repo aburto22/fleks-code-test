@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import Sorter from "../Sorter";
-import { getName, getPeople, sortPeople } from "../../lib/people";
-import { TSortOptions } from "../../types";
-import Person from "../Person";
+import Sorter from "./Sorter";
+import { getName, getPeople, sortPeople } from "../lib/people";
+import { TSortOptions } from "../types";
+import Person from "./Person";
 
-function Table() {
+function Container() {
   const [sortOptions, setSortOptions] = useState<TSortOptions>({
     order: "asc",
   });
@@ -33,4 +33,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default Container;

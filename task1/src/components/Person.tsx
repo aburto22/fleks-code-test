@@ -1,5 +1,5 @@
-import { formatDate, getName } from "../../lib/people";
-import type { TPerson } from "../../types";
+import { formatDate, getName } from "../lib/people";
+import type { TPerson } from "../types";
 
 type PersonProps = {
   person: TPerson;
