@@ -1,12 +1,12 @@
 import people from "../data.json";
 import { TPerson, TSortOptions } from "../types";
 
-const getAge = (date: Date): number => {
-  const now = new Date();
-  const baseYears = now.getFullYear() - date.getFullYear() - 1;
+const getAge = (base: Date, birthday: Date): number => {
+  const baseYears = base.getFullYear() - birthday.getFullYear() - 1;
   const birthdayPassedThisYear =
-    date.getMonth() < now.getMonth() ||
-    (date.getMonth() === now.getMonth() && date.getDate() <= now.getDate());
+    birthday.getMonth() < base.getMonth() ||
+    (birthday.getMonth() === base.getMonth() &&
+      birthday.getDate() <= base.getDate());
   return birthdayPassedThisYear ? baseYears + 1 : baseYears;
 };
 
@@ -14,7 +14,7 @@ export const getPeople = () =>
   people.map((person) => ({
     ...person,
     birthday: new Date(person.birthday),
-    age: getAge(new Date(person.birthday)),
+    age: getAge(new Date(), new Date(person.birthday)),
   }));
 
 type NameLike = {
@@ -31,21 +31,33 @@ export const formatDate = (date: Date): string =>
     month: "long",
   });
 
-export const sortPeople = (
-  people: TPerson[],
-  { field, order }: TSortOptions
-): TPerson[] => {
+type PeopleLike = Pick<TPerson, "firstName" | "lastName" | "age">;
+
+export const sortPeople = <T extends PeopleLike>(
+  people: Array<T>,
+  field: TSortOptions["field"]
+): Array<T> => {
   if (!field) {
-    return getPeople();
+    return people;
   }
 
-  return people.slice(0).sort((a, b) => {
+  return [...people].sort((a, b) => {
     if (a[field] < b[field]) {
-      return order === 'asc' ? -1 : 1;
+      return -1;
     }
     if (a[field] > b[field]) {
-      return order === 'asc' ? 1 : -1;
+      return 1;
     }
     return 0;
   });
+};
+
+export const orderPeople = <T>(
+  array: Array<T>,
+  order: TSortOptions["order"]
+): Array<T> => {
+  if (order === "asc") {
+    return array;
+  }
+  return [...array].reverse();
 };

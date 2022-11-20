@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Sorter from "./Sorter";
-import { getName, getPeople, sortPeople } from "../lib/people";
+import { getName, getPeople, orderPeople, sortPeople } from "../lib/people";
 import { TSortOptions } from "../types";
 import Person from "./Person";
 
@@ -10,7 +10,8 @@ function Container() {
   });
   const { current: people } = useRef(getPeople());
 
-  const sortedPeople = sortPeople(people, sortOptions);
+  const sortedPeople = sortPeople(people, sortOptions.field);
+  const orderedPeople = orderPeople(sortedPeople, sortOptions.order);
 
   return (
     <main className="max-w-xl p-4 pb-8 mx-auto">
@@ -24,7 +25,7 @@ function Container() {
           </tr>
         </thead>
         <tbody>
-          {sortedPeople.map((person) => (
+          {orderedPeople.map((person) => (
             <Person key={getName(person)} person={person} />
           ))}
         </tbody>
